@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 var imageSchema = new mongoose.Schema({
-	index : Number,
-	name: String,
+	indexFile : Number,
+	nameFile: String,
 	desc: String,
 	File: Buffer,	
 });

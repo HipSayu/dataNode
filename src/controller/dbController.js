@@ -1,5 +1,6 @@
 import datanode from '../models/datanode';
 import Image from '../models/image'
+import axios from 'axios';
 
 
 const handleReadDataNode = async (req, res, next) => {
@@ -29,20 +30,42 @@ const HandleWritedataNode = async (req, res, next) => {
         .then(res.json('Write Succesfully'))
         .catch((error) => next(error));
 };
+
+
+
+
 const checkClient = async (req, res) =>{
     const checkClient = req.body
     console.log(checkClient)
         if(checkClient.request=='write'){
+            let DatanodeReplication1 = checkClient.DatanodeReplication1
+            let DatanodeReplication2 = checkClient.DatanodeReplication2
             const file = {
-                index : checkClient.index,
-                name :checkClient.name,
+                indexFile : checkClient.indexFile,
+                nameFile :checkClient.nameFile,
                 desc : checkClient.desc,
-                File :checkClient.file
+                File :checkClient.File,
+                DatanodeReplication1:'',
+                DatanodeReplication2:'',
+                request:'write'
             }
             await Image
                 .create(file)
-                .then(console.log("save in to database oke"))
-            res.send('Save Complete DataNode 1')
+                .then(()=>{
+                    if(DatanodeReplication1 !='' && DatanodeReplication2 !=''){
+                        Promise.all([
+                            axios.post(DatanodeReplication1, file),
+                            axios.post(DatanodeReplication1, file),
+    
+                        ])
+                        .then(res=>{console.log(res)  })
+                        .catch((err) => console.log(err))
+                    }
+                    else {
+                        console.log("Save Oke")
+                    }
+                })
+            res.send('Save oke')
         }
         else {
             const name =checkClient.name
@@ -52,7 +75,7 @@ const checkClient = async (req, res) =>{
                 res.send(data)
                 console.log(data)
             })
-        }
+    }
 }
 
 
