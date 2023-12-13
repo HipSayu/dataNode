@@ -59,7 +59,7 @@ const checkClient = async (req, res) =>{
     
                         ])
                         .then(res=>{console.log(res)  })
-                        .catch((err) => console.log(err))
+                        .catch((err) => console.log('>>Check ERROR'))
                     }
                     else {
                         console.log("Save Oke")
@@ -68,12 +68,13 @@ const checkClient = async (req, res) =>{
             res.send('Save oke')
         }
         else {
-            const name =checkClient.name
+            const nameFile =checkClient.nameFile
+            const indexFile = checkClient.indexFile
             await Image
-            .find({name :name })
+            .find({nameFile :nameFile, indexFile:indexFile})
             .then(async (data, err)=>{
-                res.send(data)
-                console.log(data)
+                res.send(data[0])
+                // console.log('>>checK DATA',data)
             })
     }
 }
