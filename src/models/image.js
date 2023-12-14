@@ -3,7 +3,8 @@ var imageSchema = new mongoose.Schema({
 	indexFile : Number,
 	nameFile: String,
 	desc: String,
-	File: Buffer,	
+	FileUrl :String,
+	File: String,	
 });
 
 module.exports = mongoose.model('Image', imageSchema);
